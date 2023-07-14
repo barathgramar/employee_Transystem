@@ -1,0 +1,74 @@
+.sidebar{
+    height: 1000px;
+    width: 200px;
+    margin-left: auto ;
+    padding-left: 0%;
+    background-color: #282c31;
+    text-align: center;
+}
+.h1{
+    color: rgb(255, 255, 255);
+    
+}
+.hh1{
+    color: white;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    text-transform: uppercase;
+}
+.main{
+    background-color: rgb(255, 255, 255);
+    background-image: url('keyboard.jpg');
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    -webkit-filter: brightness(0.7) blur(3px);
+filter: brightness(.7) ;
+    
+}
+
+
+.sidebarlist{
+    height: auto;
+    padding: 0;
+    width: 100%;
+}
+
+.sidebarlist .row{
+    width: 100%;
+    height: 60px;
+    list-style-type: none;
+    margin: 0%;
+    display: flex;
+    flex-direction: row;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+.logo{
+    height: 70px;
+    width: 70px;
+    border-radius: 60px;
+    background-color: #fff;
+    color: #fff;
+}
+
+.sidebarlist .row:hover{
+    cursor: pointer;
+    background-color: #293846;
+
+}
+.sidebar #active{
+    background-color: #293846;
+
+}
+.row #icon{
+    flex: 40%;
+    display: grid;
+    place-items: center;
+}
+
+.row #title{
+    flex: 60%;
+}
