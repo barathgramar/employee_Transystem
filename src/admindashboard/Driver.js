@@ -21,7 +21,7 @@ const Driver=()=>{
 
     useEffect(()=>{
         getAllDrivers();
-    })
+    },[]);
 
     const saveOrUpdate=(e)=>{
         e.preventDefault();
@@ -38,9 +38,11 @@ const Driver=()=>{
     }
 
     const deleteDriver =(id)=>{
+        if(id){
         Driver_Service.deleteDriver(id).then((respose)=>{
             getAllDrivers();
         })
+        }
     }
 
     const clearTextFields=()=>{

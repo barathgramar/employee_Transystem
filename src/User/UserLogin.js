@@ -58,7 +58,7 @@ export default function ULoginPage(){
           })
 
        if(isAuthenticated()){
-        return(<Navigate to="/dashboard"/> )
+        return(<Navigate to="/userdashboard"/> )
        }
 
 return(

@@ -1,103 +1,99 @@
-import React, { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
-import { RegisterApi } from "../service/Api";
-import { StoreUserData } from "../service/Storage";
-import { isAuthenticated } from "../service/Auth";
-import "./UserRegister.css";
-export default function URegisterpage(){
+import { useState } from 'react'
+import { RegisterApi } from '../service/Api';
+import { isAuthenticated } from '../service/Auth';
+import { StoreUserData } from '../service/Storage';
+import './UserRegister.css'
+import { Link, Navigate } from 'react-router-dom';
+import NavBar from '../Component/NavBar';
 
-   const InitialErrors={
-      email: {required:false},
-      uname: {required:false},
-      phno: {required:false},
-      password:{required:false},
-      name:{required:false},
-      custom_error:null
+
+export default function RegisterPage(){
+    const initialStateErrors = {
+        email:{required:false},
+        password:{required:false},
+        name:{required:false},
+        username:{required:false},
+        phone_number:{required:false},
+        custom_error:null
+    };
+    const [errors,setErrors] = useState(initialStateErrors);
+
+    const [loading,setLoading]  =  useState(false);
+
+    const handleSubmit = (event)=>{
+        event.preventDefault();
+        let errors =initialStateErrors; 
+        let hasError = false; 
+        if (inputs.name == "") {
+            errors.name.required =true;
+            hasError=true;
+        }
+        if (inputs.email == "") {
+            errors.email.required =true;
+            hasError=true;
+        }
+        if (inputs.password == "") {
+            errors.password.required =true;
+            hasError=true;
+        }
+        if (inputs.username == "") {
+         errors.username.required =true;
+         hasError=true;
+     }
+     if (inputs.phone_number == "") {
+      errors.phone_number.required =true;
+      hasError=true;
   }
 
-    const [error,seterror]=useState(InitialErrors);
+        if (!hasError) {
+            setLoading(true)
+            //sending register api request
+            RegisterApi(inputs).then((response)=>{
+               StoreUserData(response.data.idToken);
+               window.location.href = "/userlogin";
 
-    const [loading,setloading]=useState(false)
+            }).catch((err)=>{
+               if(err.response.data.errors.message=="EMAIL_EXISTS"){
+                    setErrors({...errors,custom_error:"Already this email has been registered!"})
+               }else if(String(err.response.data.error.message).includes('WEAK_PASSWORD')){
+                    setErrors({...errors,custom_error:"Password should be at least 6 characters!"})
+               }
 
-    const handleSubmit=(event)=>{
-      event.preventDefault();
-      let errors=InitialErrors;
-      let hasError=false;
+            }).finally(()=>{
+                setLoading(false)
+            })
+        }
+        setErrors({...errors});
+    }
 
-      if(inputs.email==""){
-         errors.email.required = true ;
-         hasError=true;
-      }
-      if(inputs.name==""){
-         errors.name.required = true ;
-         hasError=true;
-      }
-      if(inputs.uname==""){
-         errors.uname.required = true ;
-         hasError=true;
-      }
-      if(inputs.phno==""){
-         errors.phno.required = true ;
-         hasError=true;
-      }
-      if(inputs.password==""){
-         errors.password.required = true ;
-         hasError=true;
-      }
-      if(inputs.password.length<6){
-        errors.password.length=true;
-        hasError=true;
-      }
-
-      if(!hasError){
-         setloading(true);
-      RegisterApi(inputs)
-         .then((response) => {
-      console.log(response);
-      StoreUserData(response.data.idToken);
-      window.location.href = "/login";
-      })
-      .catch((err) => {
-   
-      if(err.response.data.error.message=="EMAIL_EXISTS"){
-      seterror({...errors,custom_error:"Email has been already Registered"})
-      }
-      })
-      .finally(() => {
-      setloading(false);
-      });
-      }
-       seterror({...errors});
-
-      }
-
-      const [inputs,setInputs]=useState({
-          email:"",
-          name:"",
-          password:"",
-          uname:"",
-          phno:"",
+    const [inputs,setInputs] = useState({
+        email:"",
+        password:"",
+        name:"",
+        username:"",
+        phone_number:"",
     })
 
-    const handleInputs=(event)=>{
-      setInputs({...inputs,[event.target.name]:event.target.value})
+    const handleInput = (event)=>{
+        setInputs({...inputs,[event.target.name]:event.target.value})
     }
 
-    if(isAuthenticated()){
-      return <Navigate to="/userlogin"/>
+    if (isAuthenticated()) {
+        return <Navigate to="/dashboard" />
     }
-
-    return(
-        <section className="register-block">
+    
+    return (
+        <div>
+            <section className="register-block">
             <div className="reg-container">
                <div className="row ">
                   <div className="col register-sec">
                      <h2 className="text-center">User Register</h2>
-                     <form onSubmit={handleSubmit}className="register-form" action="" >
+                     <form onSubmit={handleSubmit} className="register-form" action="" >
                       <div className="form-group">
-                        <label htmlFor="exampleInputEmail1" className="text-uppercase">Name</label>
-                        <input type="text" className="form-control" onChange={handleInputs} name="name" id="" / >
-                        {error.name.required?
+                        <label htmlFor="name" className="text-uppercase">Name</label>
+                        <input type="text" className="form-control" value={inputs.name} onChange={handleInput} name="name" id="name" / >
+                        {errors.name.required?
                             (<span className="text-danger" >
                             Name is required.
                         </span>):null
@@ -105,8 +101,8 @@ export default function URegisterpage(){
                      </div>
                      <div className="form-group">
                      <label htmlFor="exampleInputEmail1" className="text-uppercase">username</label>
-                     <input type="text" className="form-control" onChange={handleInputs} name="uname" id="" / >
-                        {error.uname.required?
+                     <input type="text" className="form-control" value={inputs.username} onChange={handleInput}name="username" id="" / >
+                        {errors.username.required?
                             (<span className="text-danger" >
                             User Name is required.
                         </span>):null
@@ -115,8 +111,8 @@ export default function URegisterpage(){
 
                       <div className="form-group">
                         <label htmlFor="exampleInputEmail1" className="text-uppercase">Email</label>
-                        <input type="text"  className="form-control" onChange={handleInputs} name="email" id="" / >
-                        { error.email.required?
+                        <input type="text"  className="form-control" value={inputs.email}  onChange={handleInput} name="email" id="" / >
+                        { errors.email.required?
                             (<span className="text-danger" >
                             Email is required.
                         </span>):null
@@ -125,8 +121,8 @@ export default function URegisterpage(){
 
                      <div className="form-group">
                         <label htmlFor="exampleInputEmail1" className="text-uppercase">Phone Number</label>
-                        <input type="text" className="form-control" onChange={handleInputs} name="phno" id="" / >
-                        {error.phno.required?
+                        <input type="text" className="form-control" value={inputs.phone_number} onChange={handleInput} name="phone_number" id="" / >
+                        {errors.phone_number.required?
                             (<span className="text-danger" >
                             Phone number is required.
                         </span>):null
@@ -135,12 +131,12 @@ export default function URegisterpage(){
 
                      <div className="form-group">
                         <label htmlFor="exampleInputPassword1" className="text-uppercase">Password</label>
-                        <input  className="form-control" type="password"  onChange={handleInputs} name="password" id="" />
-                        {error.password.required?
+                        <input  className="form-control" type="password"  value={inputs.password} onChange={handleInput} name="password" id="" />
+                        {errors.password.required?
                             (<span className="text-danger" >
                             Password is required.
                         </span>):null
-                        }{error.password.length?
+                        }{errors.password.length?
                            (<span className="text-danger">
                               Password Must be above 6 characters
                            </span>):null
@@ -149,8 +145,8 @@ export default function URegisterpage(){
 
                      <div className="form-group">
                         <span className="text-danger" >
-                        {error.custom_error?
-                           (<p>{error.custom_error}</p>):null
+                        {errors.custom_error?
+                           (<p>{errors.custom_error}</p>):null
                         }
                         </span>
                         {loading?
@@ -179,6 +175,7 @@ export default function URegisterpage(){
           
           
             </div>
-          </section>
-    )
+          </section>    
+        </div>
+        )
 }

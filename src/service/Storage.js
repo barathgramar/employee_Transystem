@@ -5,3 +5,7 @@ export const StoreUserData=(data)=>{
 export const getUserData=()=>{
     localStorage.getItem('idToken')
 }
+
+export const removeUserData=()=>{
+    localStorage.removeItem('idToken');
+}
