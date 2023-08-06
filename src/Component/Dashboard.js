@@ -7,6 +7,9 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Logo from "./contact.png"
 
+const loggedInUser=localStorage.getItem("authToken");
+const userName =loggedInUser? loggedInUser.userName: null;
+
 const Dashboard=({children})=> {
   const SideBarData=[
     {
@@ -43,7 +46,7 @@ const Dashboard=({children})=> {
         <img src={Logo} alt="Logo" className="logo" />
       </div>
       <div>
-        <h1 className="hh1">ADMIN</h1>
+        <h1 className="hh1">{userName}</h1>
       </div>
         <ul className="sidebarlist">
         {SideBarData.map((val,key)=>{

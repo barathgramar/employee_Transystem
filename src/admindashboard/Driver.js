@@ -10,7 +10,6 @@ const Driver=()=>{
 
     const[drivers,setDrivers]=useState([]);
 
-    
 
     const[fname,setFname]=useState("");
     const[lname,setLname]=useState("");

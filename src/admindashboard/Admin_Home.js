@@ -7,20 +7,13 @@ function Admin_Home() {
   return (
     <div>
       <Dashboard>
-    <div className="adcontaine">
-      
-      <div><h1 className="h1">Today Bookings</h1></div><br />    
-            <Table>
-              <thead>
-                <tr>
-                  <th>Head</th>
-                  <th>Body</th>
-                </tr>
-              </thead>
-              <tbody>
-                {/* Add your table data here */}
-              </tbody>
-            </Table> 
+    <div className="homecontainer ">
+      <h1>Hello</h1>
+    <div>
+      <Table>
+        
+      </Table>
+    </div>
     </div>
     </Dashboard>
     </div>
